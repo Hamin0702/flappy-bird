@@ -35,8 +35,13 @@ let gravity = 0.4;
 
 let gameOver = false;
 let score = 0;
+let scale = 0;
 
 window.onload = function() {
+    let windowHeight = window.innerHeight;
+    scale = windowHeight / boardHeight;
+    scaleVariables(scale);
+
     board = document.getElementById("board");
     board.height = boardHeight;
     board.width = boardWidth;
@@ -99,11 +104,12 @@ function update() {
 
     // score
     context.fillStyle = "white";
-    context.font="45px sans-serif";
-    context.fillText(score, 5, 45);
+    let pixelSize = 45 * scale;
+    context.font= pixelSize + "px sans-serif";
+    context.fillText(score, 5 * scale, 45 * scale);
 
     if (gameOver) {
-        context.fillText("GAME OVER", 45, 90);
+        context.fillText("GAME OVER", 45 * scale, 90 * scale);
     }
 }
 
@@ -141,7 +147,7 @@ function placePipes() {
 function moveBird(e) {
     if (e.code == "Space" || e.code == "ArrowUp") {
         // jump
-        velocityY = -6;
+        velocityY = -6 * scale;
 
         // reset game
         if (gameOver) {
@@ -158,4 +164,28 @@ function detectCollision(a,b) {
             a.x + a.width > b.x &&
             a.y < b.y + b.height &&
             a.y + a.height > b.y;
+}
+
+function scaleVariables(scale) {
+    boardWidth = boardWidth * scale;
+    boardHeight = boardHeight * scale;
+    birdWidth = birdWidth * scale;
+    birdHeight = birdHeight * scale;
+    birdX = birdX * scale;
+    birdY = birdY * scale;
+
+    bird = {
+        x : birdX,
+        y : birdY,
+        width : birdWidth,
+        height : birdHeight
+    }
+
+    pipeWidth = pipeWidth * scale;
+    pipeHeight = pipeHeight * scale;
+    pipeX = boardWidth
+
+    velocityX = velocityX * scale;
+    velocityY = velocityY * scale;
+    gravity = gravity * scale;
 }
